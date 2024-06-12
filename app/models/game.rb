@@ -20,6 +20,6 @@ class Game < ApplicationRecord
   def self.determine_winner(user_choice, server_choice)
     return "tie" if user_choice == server_choice
 
-    WINNING_COMBINATIONS[user_choice] == server_choice ? 'win' : 'lose'
+    WINNING_COMBINATIONS[user_choice.to_sym].include?(server_choice) ? 'win' : 'lose'
   end
 end
