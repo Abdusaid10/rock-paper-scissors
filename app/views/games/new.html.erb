@@ -31,6 +31,13 @@
               <img src="<%= asset_path 'scisor.png' %>" alt="Scissors">
             </div>
           </div>
+          <div class="col-3">
+            <div class="d-flex form-check">
+              <%= f.radio_button :user_choice, 'hammer', class: "form-check-input", id: "hammer" %>
+              <%= f.label :user_choice, 'Hammer', class: "form-check-label", for: "hammer" %>
+              <img src="<%= asset_path 'hammer.png' %>" alt="Hammer" style="widht: 64px; height: 140px;">
+            </div>
+          </div>
         </div>
         <%= f.submit "Play", class: "btn btn-primary" %>
       <% end %>

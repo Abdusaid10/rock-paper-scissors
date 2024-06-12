@@ -3,13 +3,18 @@
 class Game < ApplicationRecord
   belongs_to :user
 
-  validates :user_choice, inclusion: { in: %w[rock paper scissors] }
-  validates :server_choice, inclusion: { in: %w[rock paper scissors] }
+  validates :user_choice, inclusion: { in: %w[rock paper scissors hammer] }
+  validates :server_choice, inclusion: { in: %w[rock paper scissors hammer] }
 
+  # Rock beats Scissors and Hammer.
+  # Paper beats Rock.
+  # Scissors beats Paper.
+  # Hammer beats Scissors and Paper.
   WINNING_COMBINATIONS = {
-    rock: 'scissors',
+    rock: %w[scissors hammer],
     scissors: 'paper',
-    paper: 'rock'
+    paper: 'rock',
+    hammer: %w[scissors paper]
   }.freeze  
 
   def self.determine_winner(user_choice, server_choice)
