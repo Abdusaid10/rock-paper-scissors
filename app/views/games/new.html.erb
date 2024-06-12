@@ -1,0 +1,40 @@
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-6 mx-auto">
+      <h1>Rock-Paper-Scissors</h1>
+      <p class="font-italic">Rock Paper Scissors is a zero-sum game that is usually played by two people using their hands and no tools. The idea is to make shapes with an outstretched hand where each shape will have a certain degree of power and will lead to an outcome.</p>
+      <%= form_with model: @game, url: games_path, method: :post, data: { turbo_frame: 'game_result' }, local: true do |f| %>
+        <div class="mb-3">
+          <%= f.label :user_name, "Enter your name" %>
+          <%= f.text_field :user_name, class: "form-control", required: true %>
+        </div>
+        <div class="row mb-3">
+          <label>Select your choice</label>
+          <div class="col-3">
+            <div class="d-flex form-check">
+              <%= f.radio_button :user_choice, 'rock', class: "form-check-input", id: "rock" %>
+              <%= f.label :user_choice, 'Rock', class: "form-check-label", for: "rock" %>
+              <img src="<%= asset_path 'rock.png' %>" alt="Rock">
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="d-flex form-check">
+              <%= f.radio_button :user_choice, 'paper', class: "form-check-input", id: "paper" %>
+              <%= f.label :user_choice, 'Paper', class: "form-check-label", for: "paper" %>
+              <img src="<%= asset_path 'paper.png' %>" alt="Paper">
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="d-flex form-check">
+              <%= f.radio_button :user_choice, 'scissors', class: "form-check-input", id: "scissors" %>
+              <%= f.label :user_choice, 'Scissors', class: "form-check-label", for: "scissors" %>
+              <img src="<%= asset_path 'scisor.png' %>" alt="Scissors">
+            </div>
+          </div>
+        </div>
+        <%= f.submit "Play", class: "btn btn-primary" %>
+      <% end %>
+      <%= turbo_frame_tag "game_result" %>
+    </div>
+  </div>
+</div>
