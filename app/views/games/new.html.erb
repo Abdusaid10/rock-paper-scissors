@@ -1,0 +1,122 @@
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-6 mx-auto">
+      <h1>Rock-Paper-Scissors</h1>
+      <p class="font-italic">Rock Paper Scissors is a zero-sum game that is usually played by two people using their hands and no tools. The idea is to make shapes with an outstretched hand where each shape will have a certain degree of power and will lead to an outcome.</p>
+      <%= form_with model: @game, url: games_path, method: :post, data: { turbo_frame: 'game_result' }, local: true do |f| %>
+        <div class="mb-3">
+          <%= f.label :user_name, "Enter your name" %>
+          <%= f.text_field :user_name, value: params[:user_name], class: "form-control", required: true %>
+        </div>
+        <div class="row text-center mb-3">
+          <p class="my-1"><em class="fw-bold">Select your bet</em></p>
+          <% Game::RPSH_OPTIONS.each do |option| %>
+            <div class="col-3">
+              <div class="d-flex form-check">
+                <%= f.radio_button :user_choice, "#{option}", class: "form-check-input", id: "#{option}" %>
+                <%= f.label :user_choice, "#{option.capitalize}", class: "form-check-label", for: "#{option}" %>
+                <img src="<%= asset_path "#{option}.png"%>" alt="<%= option.capitalize%>" style="widht: 64px; height: 140px;">
+              </div>
+            </div>
+          <% end %>
+        </div>
+        <%= f.submit "Play", class: "btn btn-primary" %>
+      <% end %>
+     
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="resultModal" tabindex="-1" aria-labelledby="resultModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="resultModalLabel">Game Result</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="modal-body">
+        <%= turbo_frame_tag "game_result" do %>
+          <img src="<%= asset_path 'loader.png' %>" alt="Loading..." class="img-fluid">
+        <% end %>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" id="see-games-button">See Games</button>
+        <button id="play-again-button" class="btn btn-primary" data-bs-dismiss="modal">Play again</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener("turbo:submit-start", () => {
+    const resultModal = new bootstrap.Modal(document.getElementById('resultModal'))
+    resultModal.show()
+  });
+
+  document.addEventListener("turbo:frame-load", () => {
+    const modalBody = document.getElementById('modal-body');
+    const gameResult = document.getElementById('game_result').innerHTML;
+    console.log('game result', gameResult)
+    modalBody.innerHTML = gameResult;
+  });
+
+  document.getElementById('play-again-button').addEventListener('click', () => {
+    const userName = document.querySelector('input[name="game[user_name]"]').value;
+    window.location.href = `/?user_name=${userName}`;
+  });
+
+  document.getElementById('resultModal').addEventListener('hidden.bs.modal', () => {
+    document.querySelector('form').reset();
+  });
+
+  document.getElementById('see-games-button').addEventListener('click', () => {
+    event.target.style.display = 'none';
+    fetchGames('modal-body',true);
+  });
+
+  function fetchGames(elementId, replace = false, page = 1) {
+    const userName = document.querySelector('input[name="game[user_name]"]').value;
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', `/games?user_name=${userName}&page=${page}`, true);
+
+    if (replace) {
+      xhr.setRequestHeader('Accept', 'text/html');
+    } else {
+      xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+      xhr.setRequestHeader('Accept', 'text/javascript');
+    }
+
+    xhr.onload = function() {
+      if (xhr.status >= 200 && xhr.status < 400) {
+        const response = xhr.responseText;
+        const gamesList = document.getElementById(elementId);
+
+        if (replace) {
+          gamesList.innerHTML = response;
+        } else {
+          gamesList.insertAdjacentHTML('beforeend', response);
+        }
+
+        const seeMoreButton = document.getElementById('see-more-button');
+        if (page === 1 && replace) {
+          const newSeeMoreButton = gamesList.querySelector('#see-more-button');
+          if (seeMoreButton && newSeeMoreButton) {
+            seeMoreButton.replaceWith(newSeeMoreButton);
+          }
+        } else if (seeMoreButton) {
+          seeMoreButton.setAttribute('data-page', page + 1);
+        }
+      }
+    };
+
+    xhr.send();
+  }
+
+  document.addEventListener('click', (event) => {
+    if (event.target && event.target.id === 'see-more-button') {
+      const page = event.target.dataset.page;
+      fetchGames('games-list', false, page);
+    }
+  });
+
+</script>
