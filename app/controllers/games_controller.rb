@@ -8,7 +8,7 @@ class GamesController < ApplicationController
   def create
     @user = User.find_or_create_by(name: game_params[:user_name])
     user_choice = game_params[:user_choice]
-    server_choice = fetch_server_choice || %w[rock paper scissors hammer].sample
+    server_choice = fetch_server_choice || Game::RPSH_OPTIONS.sample
 
     result = Game.determine_winner(user_choice, server_choice)
 

@@ -10,34 +10,15 @@
         </div>
         <div class="row text-center mb-3">
           <p class="my-1"><em class="fw-bold">Select your bet</em></p>
-          <div class="col-3">
-            <div class="d-flex form-check">
-              <%= f.radio_button :user_choice, 'rock', class: "form-check-input", id: "rock" %>
-              <%= f.label :user_choice, 'Rock', class: "form-check-label", for: "rock" %>
-              <img src="<%= asset_path 'rock.png' %>" alt="Rock">
+          <% Game::RPSH_OPTIONS.each do |option| %>
+            <div class="col-3">
+              <div class="d-flex form-check">
+                <%= f.radio_button :user_choice, "#{option}", class: "form-check-input", id: "#{option}" %>
+                <%= f.label :user_choice, "#{option.capitalize}", class: "form-check-label", for: "#{option}" %>
+                <img src="<%= asset_path "#{option}.png"%>" alt="<%= option.capitalize%>" style="widht: 64px; height: 140px;">
+              </div>
             </div>
-          </div>
-          <div class="col-3">
-            <div class="d-flex form-check">
-              <%= f.radio_button :user_choice, 'paper', class: "form-check-input", id: "paper" %>
-              <%= f.label :user_choice, 'Paper', class: "form-check-label", for: "paper" %>
-              <img src="<%= asset_path 'paper.png' %>" alt="Paper">
-            </div>
-          </div>
-          <div class="col-3">
-            <div class="d-flex form-check">
-              <%= f.radio_button :user_choice, 'scissors', class: "form-check-input", id: "scissors" %>
-              <%= f.label :user_choice, 'Scissors', class: "form-check-label", for: "scissors" %>
-              <img src="<%= asset_path 'scisor.png' %>" alt="Scissors">
-            </div>
-          </div>
-          <div class="col-3">
-            <div class="d-flex form-check">
-              <%= f.radio_button :user_choice, 'hammer', class: "form-check-input", id: "hammer" %>
-              <%= f.label :user_choice, 'Hammer', class: "form-check-label", for: "hammer" %>
-              <img src="<%= asset_path 'hammer.png' %>" alt="Hammer" style="widht: 64px; height: 140px;">
-            </div>
-          </div>
+          <% end %>
         </div>
         <%= f.submit "Play", class: "btn btn-primary" %>
       <% end %>
