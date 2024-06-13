@@ -40,7 +40,8 @@
         <% end %>
       </div>
       <div class="modal-footer">
-        <button id="play-again-button" class="btn btn-secondary" data-bs-dismiss="modal">Play again</button>
+        <button type="button" class="btn btn-success" id="see-games-button">See Games</button>
+        <button id="play-again-button" class="btn btn-primary" data-bs-dismiss="modal">Play again</button>
       </div>
     </div>
   </div>
@@ -66,6 +67,56 @@
 
   document.getElementById('resultModal').addEventListener('hidden.bs.modal', () => {
     document.querySelector('form').reset();
+  });
+
+  document.getElementById('see-games-button').addEventListener('click', () => {
+    event.target.style.display = 'none';
+    fetchGames('modal-body',true);
+  });
+
+  function fetchGames(elementId, replace = false, page = 1) {
+    const userName = document.querySelector('input[name="game[user_name]"]').value;
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', `/games?user_name=${userName}&page=${page}`, true);
+
+    if (replace) {
+      xhr.setRequestHeader('Accept', 'text/html');
+    } else {
+      xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+      xhr.setRequestHeader('Accept', 'text/javascript');
+    }
+
+    xhr.onload = function() {
+      if (xhr.status >= 200 && xhr.status < 400) {
+        const response = xhr.responseText;
+        const gamesList = document.getElementById(elementId);
+
+        if (replace) {
+          gamesList.innerHTML = response;
+        } else {
+          gamesList.insertAdjacentHTML('beforeend', response);
+        }
+
+        const seeMoreButton = document.getElementById('see-more-button');
+        if (page === 1 && replace) {
+          const newSeeMoreButton = gamesList.querySelector('#see-more-button');
+          if (seeMoreButton && newSeeMoreButton) {
+            seeMoreButton.replaceWith(newSeeMoreButton);
+          }
+        } else if (seeMoreButton) {
+          seeMoreButton.setAttribute('data-page', page + 1);
+        }
+      }
+    };
+
+    xhr.send();
+  }
+
+  document.addEventListener('click', (event) => {
+    if (event.target && event.target.id === 'see-more-button') {
+      const page = event.target.dataset.page;
+      fetchGames('games-list', false, page);
+    }
   });
 
 </script>

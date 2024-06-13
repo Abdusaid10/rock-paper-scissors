@@ -1,0 +1,6 @@
+<div id="games-list" style="max-height: 400px; overflow-y: scroll;">
+  <%= render partial: 'append_game_list', locals: { games: games } %>
+</div>
+<% if games.next_page %>
+  <button id="see-more-button" class="btn btn-primary" data-page="<%= games.next_page %>">See More</button>
+<% end %>

@@ -1,6 +1,17 @@
 # frozen_string_literal: true
 
 class GamesController < ApplicationController
+
+  def index
+    @user = User.find_by(name: params[:user_name])
+    @games = @user.games.order(created_at: :desc).page(params[:page]).per(10)
+
+    respond_to do |format|
+      format.html { render partial: 'games/game_list', locals: { games: @games } }
+      format.js { render partial: 'games/append_game_list', locals: { games: @games } }
+    end
+  end
+
   def new
     @game = Game.new
   end
