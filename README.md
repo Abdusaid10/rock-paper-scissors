@@ -15,8 +15,11 @@ Requirements
 git clone https://github.com/yourusername/rock-paper-scissors.git
 cd rock-paper-scissors`
 ```
-
-2. Install Dependencies
+2. Checkout to game-logic branch
+```bash
+git checkout game-logic
+```
+3. Install Dependencies
 
 Install Ruby gems:
 ```bash
@@ -27,7 +30,7 @@ Install JavaScript dependencies:
 
 yarn install
 
-3. Configure the Database
+4. Configure the Database
 
 Create and configure the PostgreSQL database:
 ```bash
@@ -35,7 +38,7 @@ rails db:create
 rails db:migrate
 ```
 
-4. Run the Rails Server
+5. Run the Rails Server
 
 Start the Rails server:
 ```bash
