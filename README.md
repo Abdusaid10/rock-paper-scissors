@@ -1,24 +1,59 @@
-# README
+# Rock-Paper-Scissors Rails App
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+> This is a web-based Rock-Paper-Scissors game built with Ruby on Rails. The application allows users to play Rock-Paper-Scissors against a server.
 
-Things you may want to cover:
+Requirements
 
-* Ruby version
+	•	Ruby 3.0.6
+	•	Rails 7.x
+	•	PostgreSQL
 
-* System dependencies
+## Running the Application Locally without Docker
 
-* Configuration
+1. Clone the Repository
+```bash
+git clone https://github.com/yourusername/rock-paper-scissors.git
+cd rock-paper-scissors`
+```
 
-* Database creation
+2. Install Dependencies
 
-* Database initialization
+Install Ruby gems:
+```bash
+  bundle install
+```
 
-* How to run the test suite
+Install JavaScript dependencies:
 
-* Services (job queues, cache servers, search engines, etc.)
+yarn install
 
-* Deployment instructions
+3. Configure the Database
 
-* ...
+Create and configure the PostgreSQL database:
+```bash
+rails db:create
+rails db:migrate
+```
+
+4. Run the Rails Server
+
+Start the Rails server:
+```bash
+rails s
+```
+Access the application in your browser at http://localhost:3000.
+
+## Running Tests
+To run the test suite, use the following command:
+
+```bash
+bundle exec rspec
+```
+Ensure that you have configured the test database and installed all dependencies before running the tests.
+## Contributing
+Feel free to submit pull requests or open issues to improve the application.
+
+## License
+This project is licensed under the MIT License. See the LICENSE file for details.
+
+This README file provides comprehensive instructions for setting up and running the application both locally and with Docker. Make sure to replace yourusername with your actual GitHub username or the correct repository URL.
