@@ -23,16 +23,24 @@ class GamesController < ApplicationController
 
     result = Game.determine_winner(user_choice, server_choice)
 
-    @game = @user.games.create(
+    @game = @user.games.build(
       user_choice: user_choice,
       server_choice: server_choice,
       result: result
     )
 
-    respond_to do |format|
-      format.html { redirect_to @game }
-      format.turbo_stream
+    if @game.save
+      respond_to do |format|
+        format.html { redirect_to @game }
+        format.turbo_stream
+      end
+    else
+      respond_to do |format|
+        format.html { render :new }
+      end
     end
+
+    
   end
 
   def show

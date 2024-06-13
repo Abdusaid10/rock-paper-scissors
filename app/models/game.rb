@@ -19,8 +19,9 @@ class Game < ApplicationRecord
   validates :server_choice, inclusion: { in: RPSH_OPTIONS }
 
   def self.determine_winner(user_choice, server_choice)
+    return nil if user_choice.nil? || server_choice.nil?
     return "tie" if user_choice == server_choice
 
-    WINNING_COMBINATIONS[user_choice.to_sym].include?(server_choice) ? 'win' : 'lose'
+    WINNING_COMBINATIONS[user_choice.to_sym]&.include?(server_choice) ? 'win' : 'lose'
   end
 end
