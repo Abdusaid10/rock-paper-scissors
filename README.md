@@ -46,6 +46,13 @@ rails s
 ```
 Access the application in your browser at http://localhost:3000.
 
+## How to play
+You need to enter your name and choose your option Rock, Paper, Scissors, or Hammer and click on play button.
+<img src="./screenshots/main.png">
+Once you click the play button it show the result showing the chosen option and wheter you won or lost
+<img src="./screenshots/result.png">
+If you click on the See Games you can find all the game results.
+<img src="./screenshots/results2.png">
 ## Running Tests
 To run the test suite, use the following command:
 
